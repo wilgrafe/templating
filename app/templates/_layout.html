@@ -1,0 +1,121 @@
+{% macro render_block(block, errors, data) %}
+  {% if block.field_type == "input" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      {% if block.label %}<label class="form-label">{{ block.label }}</label>{% endif %}
+      <input
+        class="form-control{% if errors and errors.get(block.name) %} is-invalid{% endif %}"
+        type="{{ block.input_type }}"
+        name="{{ block.name }}"
+        placeholder="{{ block.placeholder }}"
+        value="{{ (data.get(block.name) if data else '') }}"
+        {% if block.required %}required{% endif %}
+      >
+      {% if errors and errors.get(block.name) %}
+        <div class="invalid-feedback">{{ errors.get(block.name) }}</div>
+      {% endif %}
+    </div>
+  {% elif block.field_type == "textarea" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      {% if block.label %}<label class="form-label">{{ block.label }}</label>{% endif %}
+      <textarea
+        class="form-control{% if errors and errors.get(block.name) %} is-invalid{% endif %}"
+        name="{{ block.name }}"
+        placeholder="{{ block.placeholder }}"
+        {% if block.required %}required{% endif %}
+      >{{ (data.get(block.name) if data else '') }}</textarea>
+      {% if errors and errors.get(block.name) %}
+        <div class="invalid-feedback">{{ errors.get(block.name) }}</div>
+      {% endif %}
+    </div>
+  {% elif block.field_type == "select" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      {% if block.label %}<label class="form-label">{{ block.label }}</label>{% endif %}
+      <select
+        class="form-select{% if errors and errors.get(block.name) %} is-invalid{% endif %}"
+        name="{{ block.name }}"
+        {% if block.required %}required{% endif %}
+      >
+        {% for opt in block.options or [] %}
+        <option value="{{ opt }}" {% if data and data.get(block.name) == opt %}selected{% endif %}>{{ opt }}</option>
+        {% endfor %}
+      </select>
+      {% if errors and errors.get(block.name) %}
+        <div class="invalid-feedback">{{ errors.get(block.name) }}</div>
+      {% endif %}
+    </div>
+  {% elif block.field_type == "image" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      {% if block.label %}<label class="form-label">{{ block.label }}</label>{% endif %}
+      <input
+        class="form-control{% if errors and errors.get(block.name) %} is-invalid{% endif %}"
+        type="file"
+        name="{{ block.name }}"
+        {% if block.required %}required{% endif %}
+      >
+      {% if errors and errors.get(block.name) %}
+        <div class="invalid-feedback">{{ errors.get(block.name) }}</div>
+      {% endif %}
+    </div>
+  {% elif block.field_type == "date_range" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      {% if block.label %}<label class="form-label">{{ block.label }}</label>{% endif %}
+      <div class="row g-2">
+        <div class="col">
+          <input
+            class="form-control{% if errors and errors.get(block.name) %} is-invalid{% endif %}"
+            type="date"
+            name="{{ block.name }}_start"
+            value="{{ (data.get(block.name).start if data and data.get(block.name) else '') }}"
+            {% if block.required %}required{% endif %}
+          >
+        </div>
+        <div class="col">
+          <input
+            class="form-control{% if errors and errors.get(block.name) %} is-invalid{% endif %}"
+            type="date"
+            name="{{ block.name }}_end"
+            value="{{ (data.get(block.name).end if data and data.get(block.name) else '') }}"
+            {% if block.required %}required{% endif %}
+          >
+        </div>
+      </div>
+      {% if errors and errors.get(block.name) %}
+        <div class="invalid-feedback d-block">{{ errors.get(block.name) }}</div>
+      {% endif %}
+    </div>
+  {% elif block.field_type == "image_display" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      {% if block.src %}
+        <img src="{{ block.src }}" alt="{{ block.alt or '' }}" class="img-fluid">
+      {% else %}
+        <div class="text-muted small">Image src not set</div>
+      {% endif %}
+    </div>
+  {% elif block.field_type == "button" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      <button class="btn btn-primary" type="{{ block.input_type or 'submit' }}">{{ block.text or 'Submit' }}</button>
+    </div>
+  {% elif block.field_type == "text" %}
+    <div class="{{ 'mb-3 ' + block.class if block.class else 'mb-3' }}" style="{{ block.style }}">
+      <p class="mb-0">{{ block.text }}</p>
+    </div>
+  {% endif %}
+{% endmacro %}
+
+{% macro render_layout(layout, errors, data) %}
+  {% for section in layout.sections %}
+    <section class="{{ section.class }}" style="{{ section.style }}">
+      {% for row in section.rows %}
+        <div class="{{ row.class }}" style="{{ row.style }}">
+          {% for col in row.columns %}
+            <div class="{{ col.class }}" style="{{ col.style }}">
+              {% for block in col.blocks %}
+                {{ render_block(block, errors, data) }}
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </section>
+  {% endfor %}
+{% endmacro %}

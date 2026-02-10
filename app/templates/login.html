@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container" style="max-width: 420px;">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h1 class="h5 mb-3">Select account</h1>
+      {% if error %}
+      <div class="alert alert-danger">{{ error }}</div>
+      {% endif %}
+      <form method="post">
+        <div class="mb-3">
+          <label class="form-label">Account name</label>
+          <input class="form-control" name="name" placeholder="Acme" required>
+        </div>
+        <button class="btn btn-primary w-100" type="submit">Continue</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

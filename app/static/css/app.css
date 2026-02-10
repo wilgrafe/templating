@@ -1,0 +1,47 @@
+.builder-canvas {
+  min-height: 500px;
+  border: 2px dashed #d0d7de;
+  padding: 16px;
+  background: #fefefe;
+}
+
+.builder-sidebar {
+  position: sticky;
+  top: 16px;
+}
+
+.builder-section,
+.builder-row,
+.builder-column,
+.builder-block {
+  border: 1px solid #e0e0e0;
+  margin-bottom: 10px;
+  padding: 10px;
+  background: #ffffff;
+  position: relative;
+}
+
+.builder-row,
+.builder-column {
+  background: #fafafa;
+}
+
+.builder-block {
+  background: #f7f9fc;
+}
+
+.builder-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #6c757d;
+  margin-bottom: 6px;
+}
+
+.is-selected {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.2);
+}
+
+.drag-ghost {
+  opacity: 0.4;
+}

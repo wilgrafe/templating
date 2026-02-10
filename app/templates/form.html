@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_layout.html" import render_layout %}
+
+{% block content %}
+<div class="container">
+  {% if success %}
+  <div class="alert alert-success">Form submitted successfully.</div>
+  {% endif %}
+</div>
+<form method="post" action="{{ url_for('submit', account_name=account_name) }}" enctype="multipart/form-data">
+  <style>{{ custom_css | safe }}</style>
+  {{ render_layout(layout, errors, data) }}
+</form>
+{% endblock %}

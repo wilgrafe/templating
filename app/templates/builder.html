@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-2">
+      <div class="builder-sidebar">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h2 class="h6">Add</h2>
+            <div class="d-grid gap-2">
+              <button class="btn btn-outline-primary btn-sm" data-add="section">Section</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="row">Row</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="column">Column</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="input">Input</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="textarea">Textarea</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="select">Select</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="image">Image</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="date_range">Date Range</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="image_display">Image Display</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="button">Button</button>
+              <button class="btn btn-outline-primary btn-sm" data-add="text">Text</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h6">Custom CSS</h2>
+            <textarea class="form-control" rows="8" id="custom-css" placeholder=".my-class { margin-top: 10px; }">{{ custom_css }}</textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-7">
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h1 class="h6 mb-0">Layout Canvas</h1>
+            <div class="d-flex gap-2">
+              <a class="btn btn-outline-secondary btn-sm" href="{{ url_for('account_form', account_name=session.get('account_name')) }}" target="_blank">Preview</a>
+              <button class="btn btn-primary btn-sm" id="save-layout">Save Layout</button>
+            </div>
+          </div>
+          <div id="layout-canvas" class="builder-canvas"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="builder-sidebar">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="h6">Properties</h2>
+            <div id="properties-panel">
+              <p class="text-muted small">Select an element to edit its properties.</p>
+            </div>
+            <button class="btn btn-outline-danger btn-sm mt-3" id="delete-element" disabled>Delete Selected</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+<script>
+  window.INIT_LAYOUT = {{ layout_json | safe }};
+  window.ACCOUNT_NAME = "{{ session.get('account_name') }}";
+</script>
+<script src="{{ url_for('static', filename='js/builder.js') }}?v={{ config['ASSET_VERSION'] }}"></script>
+{% endblock %}
